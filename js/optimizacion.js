@@ -24,15 +24,53 @@ function createPokemonCard(data) {
   const card = document.createElement('div');
   card.className = 'pokemon-card';
   card.innerHTML = `
-    <h3>${data.name}</h3>
-    <img src="${data.sprites.front_default}" alt="${data.name}" loading="lazy">
-    <p>Altura: ${data.height / 10} m</p>
-    <p>Peso: ${data.weight / 10} kg</p>
-    <p>Experiencia base: ${data.base_experience}</p>
-    <p>Stats:</p>
-    <ul>
-      ${data.stats.map(stat => `<li>${stat.stat.name}: ${stat.base_stat}</li>`).join('')}
-    </ul>
+    <div class="card h-100 pokemon-card">
+  <div class="card-header bg-primary text-white">
+    <h5 class="card-title text-capitalize mb-0">${data.name}</h5>
+  </div>
+  <div class="row g-0">
+    <div class="col-md-8">
+      <img src="${data.sprites.front_default}" class="img-fluid rounded-start p-3" alt="${data.name}" loading="lazy">
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Altura:</span>
+            <span>${data.height / 10} m</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Peso:</span>
+            <span>${data.weight / 10} kg</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Exp: </span>
+            <span>${data.base_experience}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4 d-flex flex-column">
+      <button class="btn btn-link text-start text-decoration-none p-3 mt-auto" 
+              type="button" 
+              data-bs-toggle="collapse" 
+              data-bs-target="#statsCollapse${data.id}" 
+              aria-expanded="true" 
+              aria-controls="statsCollapse${data.id}">
+        <span class="text-muted">Stats</span>
+        <i class="bi bi-chevron-right float-end"></i>
+      </button>
+      <div class="collapse show" id="statsCollapse${data.id}">
+        <ul class="list-group list-group-flush">
+          ${data.stats.map(stat => `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="text-capitalize">${stat.stat.name}</span>
+              <span class="badge bg-primary rounded-pill">${stat.base_stat}</span>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
   `;
   return card;
 }

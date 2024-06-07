@@ -1,7 +1,7 @@
 // Variables globales
 let allPokemon = [];
 let currentPage = 1;
-const pokemonPerPage = 20;
+const pokemonPerPage = 8;
 
 // Función para cargar todos los Pokémon
 async function loadAllPokemon() {
@@ -14,7 +14,7 @@ async function loadAllPokemon() {
     displayPage(currentPage);
     populateTypeFilter();
   } catch (error) {
-    console.error("Error loading Pokémon:", error);
+    console.error("Error al cargar los Pokémon:", error);
     hideLoader();
   }
 }
@@ -22,16 +22,25 @@ async function loadAllPokemon() {
 // Event listeners
 document.addEventListener('DOMContentLoaded', loadAllPokemon);
 
-document.getElementById('search-button').addEventListener('click', () => {
+document.getElementById('search-button').addEventListener('click', async () => {
   const search = document.getElementById('search').value.toLowerCase();
-  const pokemonIndex = allPokemon.findIndex(p => p.name === search);
-  if (pokemonIndex !== -1) {
-    currentPage = Math.floor(pokemonIndex / pokemonPerPage) + 1;
-    displayPage(currentPage);
+  if (!search) return;
+
+  const pokemonData = await getPokemon(search);
+  const container = document.getElementById('pokemon-list');
+  container.innerHTML = '';
+  if (pokemonData) {
+    container.appendChild(createPokemonCard(pokemonData));
+    document.getElementById('pagination-controls').innerHTML = '';
   } else {
-    alert('Pokémon no encontrado');
+    console.error(`No se encontró el Pokémon: ${search}`);
+    container.innerHTML = `
+      <h2>Pokémon no encontrado</h2>
+      <img src="../img/poketroll.png" alt="Pokémon no encontrado">
+    `;
   }
 });
+
 
 document.getElementById('refresh-button').addEventListener('click', () => {
   document.getElementById('search').value = '';
@@ -50,3 +59,5 @@ document.getElementById('random').addEventListener('click', async () => {
     document.getElementById('pagination-controls').innerHTML = '';
   }
 });
+
+

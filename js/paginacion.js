@@ -23,9 +23,15 @@ function displayPage(page) {
     const totalPages = Math.ceil(allPokemon.length / pokemonPerPage);
     const controls = document.getElementById('pagination-controls');
     controls.innerHTML = `
-      <button onclick="changePage(-1)">Anterior</button>
-      <span>Página ${currentPage} de ${totalPages}</span>
-      <button onclick="changePage(1)">Siguiente</button>
+        <div class="d-flex justify-content-between align-items-center my-3">
+        <button class="btn btn-primary" onclick="changePage(-1)">
+        <i class="bi bi-arrow-left"></i> Anterior
+        </button>
+        <span>Página ${currentPage} de ${totalPages}</span>
+        <button class="btn btn-primary" onclick="changePage(1)">
+        Siguiente <i class="bi bi-arrow-right"></i>
+        </button>
+        </div>
     `;
   }
   
@@ -37,3 +43,4 @@ function displayPage(page) {
       displayPage(currentPage);
     }
   }
+
