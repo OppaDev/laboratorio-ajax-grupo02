@@ -1,59 +1,39 @@
-
-let todosPokemon = [];
-let actualPagina = 1;
-const catidadPorPagina = 20;
-
-async function caragarTodosPokemon() {
-    try {
-        //peticion a la api
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1000');
-        const data = await response.json();
-        todosPokemon = data.results;
-        mostrarPagina(actualPagina);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-
-function mostrarPagina(pagina) {
-    //calcular inicio y final
-    const inicio = (pagina - 1) * catidadPorPagina;
-    const final = inicio + catidadPorPagina;
-    const paginaPokemon = todosPokemon.slice(inicio, final);
-    //mostrar en el html
-    const contenedor = document.getElementById('pokemon-list');
-    contenedor.innerHTML = ''; //limpiar
-    //recorrer los pokemones de la pagina
-    paginaPokemon.forEach(async (pokemon) => {
-        const datosPokemon = await getPokemon(pokemon.name);
-        const card = createPokemonCard(datosPokemon);
-        contenedor.appendChild(card);
+// Función para mostrar una página de Pokémon
+function displayPage(page) {
+    const start = (page - 1) * pokemonPerPage;
+    const end = start + pokemonPerPage;
+    const pagePokemons = allPokemon.slice(start, end);
+  
+    const container = document.getElementById('pokemon-list');
+    container.innerHTML = ''; // Limpiar contenido previo
+  
+    pagePokemons.forEach(async (pokemon) => {
+      const pokemonData = await getPokemon(pokemon.name);
+      if (pokemonData) {
+        const card = createPokemonCard(pokemonData);
+        container.appendChild(card);
+      }
     });
-
-    actualizarControlesPaginasion();    
-}
-
-
-function actualizarControlesPaginasion() {
-    const totalPaginas = Math.ceil(todosPokemon.length / catidadPorPagina);
-    const controles = document.getElementById('pagination-controls');
-    controles.innerHTML = `
-        <button onclick="cambiarPagina(-1)">Anterior</button>
-        <span>Pagina ${actualPagina} de ${totalPaginas}</span>
-        <button onclick="cambiarPagina(1)">Siguiente</button>
+  
+    updatePaginationControls();
+  }
+  
+  // Función para actualizar los controles de paginación
+  function updatePaginationControls() {
+    const totalPages = Math.ceil(allPokemon.length / pokemonPerPage);
+    const controls = document.getElementById('pagination-controls');
+    controls.innerHTML = `
+      <button onclick="changePage(-1)">Anterior</button>
+      <span>Página ${currentPage} de ${totalPages}</span>
+      <button onclick="changePage(1)">Siguiente</button>
     `;
-}
-
-
-function cambiarPagina(cambio) {
-    const nuevaPagina = actualPagina + cambio;
-    if (nuevaPagina > 0 && nuevaPagina <= Math.ceil(todosPokemon.length / catidadPorPagina)) {
-        actualPagina = nuevaPagina;
-        mostrarPagina(actualPagina);
+  }
+  
+  // Función para cambiar de página
+  function changePage(delta) {
+    const newPage = currentPage + delta;
+    if (newPage > 0 && newPage <= Math.ceil(allPokemon.length / pokemonPerPage)) {
+      currentPage = newPage;
+      displayPage(currentPage);
     }
-}
-
-
-caragarTodosPokemon();
-
+  }
