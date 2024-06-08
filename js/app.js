@@ -1,7 +1,7 @@
 // Variables globales
 let allPokemon = [];
 let currentPage = 1;
-const pokemonPerPage = 8;
+const pokemonPerPage =20;
 
 // Función para cargar todos los Pokémon
 async function loadAllPokemon() {

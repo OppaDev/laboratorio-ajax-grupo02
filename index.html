@@ -26,7 +26,7 @@
       <div class="row mb-4">
         <div class="col-md-6">
           <div class="input-group mb-3">
-            <input type="text" id="search" class="form-control" placeholder="Buscar Pokemon" aria-label="Buscar Pokemon">
+            <input type="text" id="search" class="form-control" placeholder="Buscar Por Número" aria-label="Buscar Pokemon">
             <button id="search-button" class="btn btn-outline-secondary" type="button">
               <i class="bi bi-search"></i>
             </button>
@@ -44,7 +44,8 @@
               <option value="">Todos los Tipos</option>
             </select>
             <input type="number" id="min-attack" class="form-control" placeholder="Min Ataque">
-            <input type="number" id="min-peso" class="form-control" placeholder="Min Peso (kg)">
+            <input type="number" id="max-attack" class="form-control" placeholder="Max Ataque">
+            <input type="number" id="min-peso" class="form-control" placeholder="Min Peso(kg)">
             <button onclick="applyFilters()" class="btn btn-primary">
               <i class="bi bi-funnel-fill"></i> Filtrar
             </button>

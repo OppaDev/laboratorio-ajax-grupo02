@@ -15,6 +15,7 @@ async function populateTypeFilter() {
 async function applyFilters() {
   const typeFilter = document.getElementById('type-filter').value;
   const minAttack = parseInt(document.getElementById('min-attack').value) || 0;
+  const maxAttack = parseInt(document.getElementById('max-attack').value) || 999;
   const minPeso = parseInt(document.getElementById('min-peso').value) || 0;
 
   const filteredPokemon = await Promise.all(allPokemon.map(async (pokemon) => {
@@ -25,8 +26,9 @@ async function applyFilters() {
   const filtered = filteredPokemon.filter(({ data }) => {
     const hasType = !typeFilter || data.types.some(t => t.type.name === typeFilter);
     const hasMinAttack = data.stats.find(s => s.stat.name === 'attack').base_stat >= minAttack;
+    const hasMaxAttack = data.stats.find(s => s.stat.name === 'attack').base_stat <= maxAttack;
     const hasMinPeso = data.weight >= minPeso;
-    return hasType && hasMinAttack && hasMinPeso;
+    return hasType && hasMinAttack && hasMinPeso && hasMaxAttack;
   }).map(({ pokemon }) => pokemon);
 
   allPokemon = filtered;
@@ -38,6 +40,7 @@ async function applyFilters() {
 function resetFilters() {
   document.getElementById('type-filter').value = '';
   document.getElementById('min-attack').value = '';
+  document.getElementById('max-attack').value = '';
   document.getElementById('min-peso').value = '';
   loadAllPokemon(); // Esto recargará todos los Pokémon
 }

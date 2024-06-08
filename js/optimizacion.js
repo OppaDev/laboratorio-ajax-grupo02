@@ -19,7 +19,7 @@ async function getPokemon(name) {
   }
 }
 
-// Función para crear una tarjeta de Pokémon (usando template literals para mejor rendimiento)
+// Función para crear una tarjeta de Pokémon con sus datos
 function createPokemonCard(data) {
   const card = document.createElement('div');
   card.className = 'pokemon-card';
